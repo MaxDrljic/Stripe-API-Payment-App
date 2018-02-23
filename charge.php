@@ -3,7 +3,7 @@
 
   $api_key = API_KEY;
 
-  \Stripe\Stripe::setApiKey('sk_test_6GjnziHNWtypyczw0iDWspR9');
+  // \Stripe\Stripe::setApiKey('sk_test_6GjnziHNWtypyczw0iDWspR9');
 
   // Sanitize POST Array
   $POST = filter_var_array($_POST, FILTER_SANITIZE_STRING);
