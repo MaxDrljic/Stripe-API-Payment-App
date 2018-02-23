@@ -1,9 +1,10 @@
 <?php
   require_once('vendor/autoload.php');
+  require_once('config/db.php');
+  require_once('lib/pdo_db.php');
+  require_once('models/Customer.php');
 
-  $api_key = API_KEY;
-
-  
+  \Stripe\Stripe::setApiKey('YOUR API KEY HERE');
 
   // Sanitize POST Array
   $POST = filter_var_array($_POST, FILTER_SANITIZE_STRING);
@@ -26,6 +27,20 @@ $charge = \Stripe\Charge::create(array(
   "description" => "Buy this product for [$50]",
   "customer" => $customer->id
 ));
+
+// Customer Data
+$customerData = [
+  'id' => $charge->customer,
+  'first_name' => $first_name,
+  'last_name' => $last_name,
+  'email' => $email
+];
+
+// Instantiate Customer
+$customer = new Customer();
+
+// Add Customer Method
+$customer->addCustomer($customerData);
 
 // Redirect to success
 header('Location: success.php?tid='.$charge->id.'&product='.$charge->description);
