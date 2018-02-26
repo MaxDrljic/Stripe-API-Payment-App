@@ -3,8 +3,9 @@
   require_once('config/db.php');
   require_once('lib/pdo_db.php');
   require_once('models/Customer.php');
+  require_once('models/Transaction.php');
 
-  \Stripe\Stripe::setApiKey('YOUR API KEY HERE');
+  \Stripe\Stripe::setApiKey('sk_test_6GjnziHNWtypyczw0iDWspR9');
 
   // Sanitize POST Array
   $POST = filter_var_array($_POST, FILTER_SANITIZE_STRING);
@@ -41,6 +42,24 @@ $customer = new Customer();
 
 // Add Customer Method
 $customer->addCustomer($customerData);
+
+
+
+// Transaction Data
+$transactionData = [
+  'id' => $charge->id,
+  'customer_id' => $charge->customer,
+  'product' => $charge->description,
+  'amount' => $charge->amount,
+  'currency' => $charge->currency,
+  'status' => $charge->status,
+];
+
+// Instantiate Customer
+$transaction = new Transaction();
+
+// Add Transaction To DB
+$transaction->addTransaction($transactionData);
 
 // Redirect to success
 header('Location: success.php?tid='.$charge->id.'&product='.$charge->description);
